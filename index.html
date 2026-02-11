@@ -60,7 +60,23 @@
     a, button, .nav-item, .menu-toggle, input {
       cursor: var(--cursor-image) !important;
     }
+    /* 统一的注释/说明文字样式 */
+    .desc-text {
+      font-size: 0.78rem;           /* 调小字号 */
+      color: var(--text-dim);      /* 使用你现有的淡粉/紫色 */
+      opacity: 0.75;               /* 降低透明度，使其视觉上更“轻” */
+      margin: 5px 0 10px 2px;      /* 统一间距 */
+      line-height: 1.6;            /* 增加行高，防止小字挤成一团 */
+      display: block;
+    }
 
+    /* 针对 blockquote 内部列表的微调 */
+    blockquote ul {
+      margin: 8px 0 0 15px;        /* 让列表稍微缩进，更有层次感 */
+      padding: 0;
+    }
+
+    
     /* 遮罩层 */
     .overlay {
       position: fixed;
@@ -354,23 +370,88 @@
     <h1 class="page-title">赛博大唐公民通行证</h1>
     <div class="page-subtitle">CYBER TANG DYNASTY • PLAYER GUIDE</div>
 
-    <!-- 1. 公民身份 -->
-    <h2 id="sec-identity">第一章：公民身份注册</h2>
-    
-    <h3>1. 身份绑定</h3>
-    <p>接入天市垣的第一步，请在您的<strong>个人专属群</strong>中建立坐标。绑定后解锁背包、信件、小群开设等所有核心权限。</p>
-    
-    <div class="cmd-card">
-      <div class="cmd-content">
-        注册坐标 <span class="var">恋综名</span> <span class="var">用户名</span> <span class="var">个人群群号</span>
-      </div>
-      <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
-    </div>
-    
-    <blockquote>
-      <p>提示：可以通过 <code>打开芥子空间</code> 查看背包，或 <code>st show</code> 查看面板。</p>
-    </blockquote>
+    <section id="guide-help">
+      <h2>✨ 智能指南检索</h2>
+      
+      <p>
+        所有指令均可通过【恋综指南】调取，如有任何疑问也可通过模糊匹配的 <strong>功能名+指南/指令/格式</strong> 调取。
+      </p>
+      <p>
+        例如：心动信指南、小群格式、背包指令、地图指南...
+      </p>
 
+      <div class="cmd-card">
+        <div class="cmd-content">
+          <span class="var">功能名</span> + 指南/指令/格式
+        </div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+      
+    </section>
+
+    <section id="identity">
+      <h2>第一章：身份与档案</h2>
+      
+      <h3>1. 身份注册 </h3>
+      <p>
+        系统将自动初始化芥子空间、人物面板(.st show)，并同步修改公告群及戏群的群名片。
+      </p>
+      <div class="cmd-card">
+        <div class="cmd-content">
+          注册坐标 <span class="var">恋综名</span> <span class="var">用户名</span> <span class="var">群号</span>
+        </div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+
+      <h3>2. 公知管理</h3>
+      <p>
+        支持带图上传（图片需在同一条消息内）。
+      </p>
+      <div class="cmd-card">
+        <div class="cmd-content">
+          提交公知 <span class="var">内容</span>
+        </div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+
+      <h3>3. 关系线</h3>
+      <div class="cmd-card">
+        <div class="cmd-content">
+          关系线 <span class="var">A</span>to<span class="var">B</span> <span class="var">关系内容</span>
+        </div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-content">
+          确认关系线 <span class="var">A</span>to<span class="var">B</span> <span class="var">最终内容</span>
+        </div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+      <p style="font-size: 0.9em; color: #ccc; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 4px; margin-top: 10px; border-left: 3px solid var(--gold);">
+        说明：发送关系线后可进行3v3回合的协商聊天。⚠️请注意最终版本需由任意一方发送【确认关系线】指令才生效，系统仅收录已确认关系线。
+      </p>
+
+      <h3>4. 信息查询 (聚合)</h3>
+      <div class="cmd-card">
+        <div class="cmd-content">
+          查看信息 <span class="var">人物名</span>
+        </div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+      <p style="font-size: 0.9em; color: var(--gold); margin-top: 5px; margin-bottom: 15px;">
+        ✨ 使用此指令，系统将一次性为您整理出该人物的公知、你们之间的关系线、以及所有相关的小群状态！
+      </p>
+      
+      <div class="cmd-card">
+        <div class="cmd-content">查看信息 公知</div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+      <div class="cmd-card">
+        <div class="cmd-content">查看信息 关系线</div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+    </section>
+    
     <!-- 2. 鸿雁传书 -->
     <h2 id="sec-letters">第二章：鸿雁传书 (社交)</h2>
 
@@ -388,6 +469,23 @@
       </div>
       <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
     </div>
+
+    <section id="letter">
+      <h3>2. 查看与修改</h3>
+      <p>可查看今日已发内容及数量，支持提前调整。</p>
+      
+      <div class="cmd-card">
+        <div class="cmd-content">查看心动信</div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+      
+      <div class="cmd-card">
+        <div class="cmd-content">
+          撤回心动信 <span class="var">收信人</span>
+        </div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+    </section>
 
     <h3>2. 小纸条 (长安速递)</h3>
     <p>即时送达。可带图片，需保证在一个气泡内发送。</p>
@@ -450,7 +548,7 @@
     </blockquote>
 
     <h3>2. 登出与结算</h3>
-    <p>系统自动结算信用点并重置。</p>
+    <p>系统自动结算信用点，自动备份所有戏录并重置。</p>
     <div class="cmd-card">
       <div class="cmd-content">离开全息舱</div>
       <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
@@ -474,7 +572,7 @@
       <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
     </div>
 
-    <h3>4. 星轨查询 (时间线)</h3>
+    <h3>4. 时间线</h3>
     <div class="cmd-card">
       <div class="cmd-content">查看时间线</div>
       <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
@@ -485,6 +583,33 @@
       </div>
       <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
     </div>
+
+    <section id="hologram">
+      <blockquote>
+        <ul class="legend-list">
+        <ul style="margin: 5px 0 0 0; font-size: 0.9em;">
+          <li>✅ 已完结小群</li>
+          <li>☑️ 无需回戏 </span></li>
+          <li>🔘 <strong style="color: #fff;">等你回戏</strong></span></li>
+          <li>🔴 <strong style="color: var(--red-alert);">超时未回</strong> <span style="color: #666;">(>24h)</span></li>
+          <li>
+            *注：以“p”开头的请假/闲聊消息不计入统计，不会打断状态。
+          </li>
+        </ul>
+    
+    </section>
+
+    <section id="undo">
+      <h3>5. 撤回</h3>
+      <p class="section-desc">引用撤回或骰子撤回均会删除自动备份的戏录，不计入复盘。</p>
+      
+      <div class="cmd-card">
+        <div class="cmd-content">
+          <span class="var-desc">引用需要撤回的消息</span> 撤回
+        </div>
+        <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+      </div>
+    </section>
 
     <!-- 4. 天工养成 -->
     <h2 id="sec-craft">第四章：天工与养成</h2>
@@ -509,17 +634,33 @@
       <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
     </div>
 
-    <h3>2. 修行进阶</h3>
-    <p>查询等级、头衔及升级条件。</p>
-    <div class="cmd-card">
-      <div class="cmd-content">查看养成</div>
-      <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
-    </div>
 
     <!-- 5. 探索经济 -->
     <h2 id="sec-explore">第五章：探索与经济</h2>
 
-    <h3>1. 天垣市集</h3>
+    <h3>1. 背包管理 (自动激活)</h3>
+    <div class="cmd-card">
+      <div class="cmd-content">打开芥子空间</div>
+      <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+    </div>
+    <div class="cmd-card">
+      <div class="cmd-content">打开芥子空间 详细版</div>
+      <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+    </div>
+    <div class="cmd-card">
+      <div class="cmd-content">
+        使用道具 <span class="var">道具名</span> <span class="var">数量</span>
+      </div>
+      <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+    </div>
+    <div class="cmd-card">
+      <div class="cmd-content">
+        丢弃线索 <span class="var">线索名</span> <span class="var">数量</span>
+      </div>
+      <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
+    </div>
+
+    <h3>2. 天垣市集</h3>
     <div class="cmd-card">
       <div class="cmd-content">逛逛市集</div>
       <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
@@ -531,27 +672,15 @@
       <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
     </div>
 
-    <h3>2. 星图踩点</h3>
+    <h3>3. 星图踩点</h3>
     <div class="cmd-card">
       <div class="cmd-content">
         踩点坐标 <span class="var">地点名</span>
       </div>
       <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
     </div>
-    <div class="cmd-card">
-      <div class="cmd-content">
-        使用道具 <span class="var">道具名</span> <span class="var">数量</span>
-      </div>
-      <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
-    </div>
-    <div class="cmd-card">
-      <div class="cmd-content">
-        丢弃道具 <span class="var">道具名</span> <span class="var">数量</span>
-      </div>
-      <button class="copy-btn" onclick="copyCmd(this)">COPY</button>
-    </div>
 
-    <h3>3. 抽签</h3>
+    <h3>4. 抽签</h3>
     <div class="cmd-card">
       <div class="cmd-content">
         抽取签筒 <span class="var">签名</span>
