@@ -29,9 +29,10 @@
       push(line.slice(last));
       return out;
     }).join("\n");
-    return '<button class="cmd" type="button" title="点一下复制"><code>' + body + "</code>" +
-      '<span class="copy" aria-hidden="true">复制</span></button>' +
-      (cmd.n ? '<div class="cmd-note">' + esc(cmd.n) + "</div>" : "");
+    var multi = cmd.c.indexOf("\n") > -1;
+    return '<button class="cmd' + (multi ? " multi" : "") + '" type="button" title="点一下复制"><code>' + body + "</code>" +
+      (cmd.n ? '<span class="cmd-note">' + esc(cmd.n) + "</span>" : "") +
+      '<span class="copy" aria-hidden="true">复制</span></button>';
   }
 
   function featureHTML(f) {
@@ -39,7 +40,7 @@
       (f.where ? '<span class="tag">' + esc(f.where) + "发送</span>" : "") +
       (f.isNew ? '<span class="tag new">NEW</span>' : "") + "</h3>";
     if (f.desc) h += "<p>" + esc(f.desc) + "</p>";
-    h += (f.cmds || []).map(cmdHTML).join("");
+    h += '<div class="cmds">' + (f.cmds || []).map(function (c) { return cmdHTML(c); }).join("") + "</div>";
     if (f.legend) h += '<div class="legend">' + f.legend.map(function (l) { return "<span>" + l.i + " " + esc(l.x) + "</span>"; }).join("") + "</div>";
     h += (f.notes || []).map(function (n) { return '<div class="note ' + (n.t === "warn" ? "warn" : "") + '">' + esc(n.x) + "</div>"; }).join("");
     return h + "</article>";
@@ -88,7 +89,7 @@
       var paw = document.createElement("span");
       paw.className = "paw pawicon"; paw.style.left = px + "px"; paw.style.top = py + "px";
       document.body.appendChild(paw); setTimeout(function () { paw.remove(); }, 900);
-      btn.textContent = "已复制"; row.classList.add("done"); say("已复制，去 QQ 粘贴后把灰框里的字换成自己的");
+      btn.textContent = "已复制"; row.classList.add("done"); say("已复制，去 QQ 粘贴后把彩色的字换成自己的");
       setTimeout(function () { btn.textContent = "复制"; row.classList.remove("done"); }, 1400);
     }, function () { say("复制失败，请长按指令手动复制"); });
   });
