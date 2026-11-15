@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>图多盖洛 | 指挥官后台手册</title>
+<meta itemprop="name" content="图多盖洛 · 赛博大唐公民通行证">
+<meta name="description" itemprop="description" content="赛博大唐恋综管理指令：开局、功能开关、占线与官约、嘉宾与市集、星图、表格导入、戏录导出。">
+<meta name="theme-color" content="#0b0814">
+<meta property="og:title" content="图多盖洛 | 指挥官后台手册">
+<meta property="og:description" content="赛博大唐恋综管理指令：开局、功能开关、占线与官约、嘉宾与市集、星图、表格导入、戏录导出。">
+<meta property="og:image" content="https://www.impression.icu/assets/share.png">
+<meta property="og:type" content="website">
+<meta itemprop="image" content="https://www.impression.icu/assets/share.png">
+<link rel="icon" href="assets/bow.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+SC:wght@700;900&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=7.13.2">
+</head>
+<body data-page="admin" class="admin">
+<div class="sky"></div>
+
+<header class="bar">
+  <a class="brand" href="./">
+    <img src="assets/bow.png" alt="">
+    <b>图多盖洛</b>
+    <small>TOODLES GALORE</small>
+  </a>
+  <a class="entry" href="./">← 返回公民指南</a>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">CYBER TANG DYNASTY · COMMANDER HANDBOOK</div>
+      <h1>天垣市管理局<br><em>指挥官手册</em></h1>
+      <p class="lead">这里是管理组用的指令。在恋综管理群发 <b>后台指南</b>，可以调出同样分类的快捷按钮和开局进度。下面的指令<b>点一下就能复制</b>，粘贴后把灰框里的字换成实际内容。</p>
+      <div class="search">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="搜指令：占线、官约、导入…" autocomplete="off" aria-label="搜索指令">
+        <button id="q-clear" type="button" aria-label="清空">✕</button>
+      </div>
+      <div class="search-meta" id="q-meta" aria-live="polite"></div>
+      <div class="quick"><span>常用</span><button type="button" data-jump="后台占线">🚫 占线</button><button type="button" data-jump="官约">💞 官约</button><button type="button" data-jump="数据与地图">📥 导入表格</button><button type="button" data-jump="导出戏录">📜 导出戏录</button></div>
+    </div>
+
+    <div class="pass-stage">
+      <div class="pass">
+        <div class="pass-head"><b>指挥官通行证</b><span>COMMANDER PASS</span></div>
+        <div class="pass-body">
+          <div class="pass-photo"><img src="assets/portrait.png" alt="图多盖洛与小白猫"></div>
+          <dl>
+            <div><dt>引导员</dt><dd class="big">图多盖洛</dd></div>
+            <div><dt>签发</dt><dd>天垣市管理局</dd></div>
+            <div><dt>版本</dt><dd data-version>V7.13</dd></div>
+          </dl>
+          <div class="seal" aria-hidden="true"><span>图</span><span>盖</span><span>多</span><span>洛</span></div>
+        </div>
+        <div class="pass-foot">TOODLES GALORE · DESIGNED FOR TANG DYNASTY</div>
+      </div>
+    </div>
+  </section>
+
+  <ol class="steps">
+    <li><i>壹</i><div><b>确认核心权限</b><span>确认核心权限 恋综名 群号</span></div></li>
+    <li><i>贰</i><div><b>设置公告群和戏群</b><span>分别在公告群、戏群里发送设置指令</span></div></li>
+    <li><i>叁</i><div><b>开播</b><span>发送「开启 恋综」，开播日期决定 D0</span></div></li>
+  </ol>
+
+  <div class="layout">
+    <nav class="rail" id="rail" aria-label="章节"></nav>
+    <main id="chapters"></main>
+  </div>
+</div>
+
+<footer class="foot">
+  <blockquote>愿长安的月光永远照耀您的归途</blockquote>
+  <cite>—— <span class="pawicon"></span> 图多盖洛</cite>
+  <small>CYBER TANG DYNASTY · <span data-version>V7.13</span></small>
+</footer>
+
+<button class="top" id="top" type="button" aria-label="回到顶部"><span class="pawicon"></span></button>
+<div class="toast" id="toast" role="status"></div>
+<script src="assets/data.js?v=7.13.2"></script>
+<script src="assets/app.js?v=7.13.2"></script>
+</body>
+</html>
