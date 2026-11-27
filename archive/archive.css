@@ -379,3 +379,26 @@ body.paper .rtop { background: #fff; border-color: #e1d2ea; box-shadow: 0 10px 2
 .hall-links span { display: block; color: var(--dim); font-size: .88rem; }
 .hall-links em { margin-left: auto; font-style: normal; color: var(--accent); }
 @media (min-width: 720px) { .hall-links { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- 管理员校对 ---------- */
+.proof-btn { color: var(--accent); border-color: rgba(241,147,232,.5); }
+body.proofing .ed-box { display: grid; gap: 6px; }
+.ed { padding: 6px 10px; border-radius: 8px; border: 1px dashed rgba(241,170,235,.35); background: rgba(255,255,255,.04); white-space: pre-wrap; outline: 0;
+  font-family: var(--display); font-size: 1.02rem; line-height: 1.85; color: var(--text); cursor: text; transition: border-color .2s, background .2s; }
+.ed:focus { border-style: solid; border-color: var(--accent); background: rgba(241,147,232,.08); }
+.ed.changed { border-color: #c99bf0; background: rgba(201,155,240,.14); box-shadow: inset 3px 0 0 #c99bf0; }
+body.paper .ed { color: #2e2238; background: #fff; }
+.proof-bar { position: fixed; left: 50%; bottom: 18px; z-index: 85; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 18px;
+  border-radius: 999px; border: 1px solid rgba(241,147,232,.5); background: rgba(30,12,40,.95); box-shadow: 0 16px 40px rgba(0,0,0,.5); white-space: nowrap; max-width: calc(100% - 24px); }
+.proof-bar .pb-t { font-size: .86rem; color: var(--dim); }
+.proof-bar .pb-n { font-size: .86rem; color: var(--accent); font-weight: 600; }
+.proof-bar .btn { height: 36px; padding: 0 16px; font-size: .88rem; }
+@media (max-width: 560px) { .proof-bar .pb-t { display: none; } }
+.proof-modal { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; padding: 16px; background: rgba(5,2,5,.6); }
+.proof-card { width: min(420px, 100%); padding: 22px; background: linear-gradient(160deg, #2a1236, #150a1d); }
+.proof-card b { font-family: var(--display); font-size: 1.2rem; color: #f7d4f5; }
+.proof-card p { color: var(--dim); font-size: .9rem; line-height: 1.7; }
+.proof-acts { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+.proof-toast { position: fixed; left: 50%; bottom: 80px; z-index: 99; transform: translate(-50%, 20px); opacity: 0; padding: 10px 18px; border-radius: 999px; background: #fdeefd; color: #2e2238;
+  font-size: .9rem; font-weight: 600; box-shadow: 0 12px 30px rgba(0,0,0,.45); transition: all .25s; pointer-events: none; max-width: calc(100% - 32px); }
+.proof-toast.show { transform: translate(-50%, 0); opacity: 1; }

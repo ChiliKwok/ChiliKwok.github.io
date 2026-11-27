@@ -51,7 +51,7 @@
   function whoLabel(sc, sep) { return (sc.who || []).length ? sc.who.join(sep || " × ") : (sc.place || sc.raw || ""); }
   function text(parts) { return (parts || []).filter(function (p) { return typeof p === "string"; }).join(""); }
 
-  function sceneHTML(sc) {
+  function sceneHTML(sc, si, di) {
     var tags = "";
     if (sc.type) tags += '<span class="sc-type">' + esc(sc.type) + "</span>";
     if (sc.place && (sc.who || []).length) tags += '<span class="sc-pl">' + esc(sc.place) + "</span>";
@@ -60,13 +60,14 @@
     var info = (sc.info || []).filter(function (kv) { return !/^(邀请人|被邀请人|时间|地点)$/.test(kv[0]); })
       .map(function (kv) { return '<div class="sc-info"><b>' + esc(kv[0]) + "</b>" + esc(kv[1]) + "</div>"; }).join("");
     var len = 0, prev = null, k = 0;
-    var body = (sc.lines || []).map(function (ln) {
+    var body = (sc.lines || []).map(function (ln, li) {
+      var dp = ' data-p="s.' + di + "." + si + "." + li + '"';
       len += chars(ln.p);
       if (ln.s !== prev) k++;
       prev = ln.s;
       var alt = k % 2 ? "" : " alt";
-      if (!ln.s) return '<div class="ln plain' + alt + '">' + partsHTML(ln.p) + "</div>";
-      return '<div class="ln' + alt + '" style="--c:' + hue(ln.s) + '"><div class="sp">' + esc(ln.s) + '</div><div class="tx">' + partsHTML(ln.p) + "</div></div>";
+      if (!ln.s) return '<div class="ln plain' + alt + '"' + dp + '><div class="tx">' + partsHTML(ln.p) + "</div></div>";
+      return '<div class="ln' + alt + '"' + dp + ' style="--c:' + hue(ln.s) + '"><div class="sp">' + esc(ln.s) + '</div><div class="tx">' + partsHTML(ln.p) + "</div></div>";
     }).join("");
     if (len) tags += '<span class="sc-len">' + fmtN(len) + " 字</span>";
     return '<article class="scene" id="' + esc(sc.id) + '" data-who="' + esc((sc.who || []).join("|")) + '">' +
@@ -80,18 +81,18 @@
     var m = String(s).match(/^(.+?)x(.+)$/);
     return m && m[1] && m[2] ? [m[1], m[2]] : null;
   }
-  function mailHTML(kind, group, dayId, idx) {
+  function mailHTML(kind, group, dayId, di) {
     var label = kind === "letters" ? "心动信" : "小纸条";
     return '<section class="mail ' + kind + '" id="' + dayId + "-" + kind + '"><h3 class="mail-title"><span>' + label + "</span>" +
       '<small>' + group.reduce(function (n, g) { return n + g.items.length; }, 0) + (kind === "letters" ? " 封" : " 张") + "</small></h3>" +
-      group.map(function (g) {
+      group.map(function (g, gi) {
         var who = [g.to];
-        var items = g.items.map(function (it) {
+        var items = g.items.map(function (it, ii) {
           var pair = kind === "notes" ? pairOf(it.from) : null, from = pair ? pair[0] : it.from;
           who.push(from); if (pair) who.push(pair[1]);
           var label = pair ? '<b style="--c:' + hue(pair[0]) + '">' + esc(pair[0]) + '</b><i>→</i><b style="--c:' + hue(pair[1]) + '">' + esc(pair[1]) + "</b>"
             : '<b style="--c:' + hue(from) + '">' + esc(from) + "</b>";
-          return '<div class="mail-item' + (pair && pair[0] !== g.to ? " mine" : "") + '"><div class="from">' + label + '</div><div class="tx">' + partsHTML(it.p, kind === "letters") + "</div></div>";
+          return '<div class="mail-item' + (pair && pair[0] !== g.to ? " mine" : "") + '" data-p="' + (kind === "letters" ? "l." : "n.") + di + "." + gi + "." + ii + '"><div class="from">' + label + '</div><div class="tx">' + partsHTML(it.p, kind === "letters") + "</div></div>";
         }).join("");
         return '<div class="mail-to" data-who="' + esc(who.join("|")) + '">' +
           '<div class="to">' + (kind === "letters" ? "致 " : "与 ") + '<b style="--c:' + hue(g.to) + '">' + esc(g.to) + "</b>" + (kind === "notes" ? " 的纸条往来" : "") + "</div>" + items + "</div>";
@@ -125,16 +126,16 @@
     }).join("");
     var people = Object.keys(names).sort(function (a, b) { return a.localeCompare(b, "zh"); });
 
-    var days = book.days.map(function (d) {
+    var days = book.days.map(function (d, di) {
       var idx = d.scenes.map(function (s) {
         return '<li data-who="' + esc((s.who || []).join("|")) + '"><a href="#' + esc(s.id) + '"><span class="no">' + esc(s.id) + "</span>" +
           '<span class="pl">' + esc(whoLabel(s)) + '<small>' + esc(s.place || "") + '</small></span><span class="tm">' + esc(s.time || "") + "</span></a></li>";
       }).join("");
-      var mails = (d.letters && d.letters.length ? mailHTML("letters", d.letters, d.d) : "") + (d.notes && d.notes.length ? mailHTML("notes", d.notes, d.d) : "");
+      var mails = (d.letters && d.letters.length ? mailHTML("letters", d.letters, d.d, di) : "") + (d.notes && d.notes.length ? mailHTML("notes", d.notes, d.d, di) : "");
       return '<section class="day" id="day-' + esc(d.d) + '"><header class="day-head"><h2>' + esc(d.d) + "</h2>" +
         "<p>" + esc(dayLine(d, d.scenes.length)) + "</p></header>" +
         (idx ? '<details class="idx"><summary>场次索引 <small>' + d.scenes.length + " 场</small></summary><ol>" + idx + "</ol></details>" : "") +
-        d.scenes.map(sceneHTML).join("") + mails + "</section>";
+        d.scenes.map(function (sc, si) { return sceneHTML(sc, si, di); }).join("") + mails + "</section>";
     }).join("");
 
     root.innerHTML =
@@ -349,5 +350,5 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(setStick);
   }
 
-  g.Reader = { render: render, text: text };
+  g.Reader = { render: render, text: text, partsHTML: partsHTML };
 })(window);

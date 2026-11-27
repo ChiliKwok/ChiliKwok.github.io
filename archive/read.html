@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap">
 <link rel="stylesheet" href="../assets/site.css?v=7.13.16">
-<link rel="stylesheet" href="archive.css?v=13">
+<link rel="stylesheet" href="archive.css?v=14">
 </head>
 <body>
 <div class="sky"></div>
@@ -38,11 +38,12 @@
 <footer class="foot">
   <blockquote>愿长安的月光永远照耀您的归途</blockquote>
   <cite>—— <span class="pawicon"></span> 图多盖洛</cite>
-  <small>CYBER TANG DYNASTY · ARCHIVE</small>
+  <small>CYBER TANG DYNASTY · ARCHIVE · <a href="#" id="proofLink" style="color:inherit">管理员校对</a></small>
 </footer>
 
 <script src="crypto.js?v=2"></script>
-<script src="render.js?v=10"></script>
+<script src="render.js?v=11"></script>
+<script src="edit.js?v=2"></script>
 <script>
 (function () {
   var id = new URLSearchParams(location.search).get("id") || "";
@@ -76,6 +77,7 @@
       $("gate").hidden = true; $("gate").style.display = "none"; $("book").hidden = false; window.scrollTo(0, 0);
       Reader.render($("book"), book, loader, { kicker: "戏录 · " + (info && info.scope ? info.scope : "ARCHIVE") });
       document.title = book.title + " | 戏录馆";
+      if (window.ArchiveEdit) ArchiveEdit.setup({ id: id, book: book, key: key, meta: meta });
       if (location.hash) { var el = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (el) el.scrollIntoView(); }
     } catch (e) {
       $("go").disabled = false; $("go").textContent = "启封阅读";
