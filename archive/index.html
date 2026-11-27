@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>戏录馆 | 图多盖洛</title>
+<meta name="theme-color" content="#050205">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/bow.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=7.13.16">
+<link rel="stylesheet" href="archive.css?v=13">
+</head>
+<body>
+<div class="sky"></div>
+<header class="bar">
+  <a class="brand" href="../"><img src="../assets/bow.png" alt=""><b>图多盖洛</b><small>TOODLES GALORE</small></a>
+  <nav class="wall-tabs"><a href="../wall/lines.html">挂线墙</a><a href="../wall/pies.html">饼墙</a><a href="./" aria-current="page">戏录馆</a></nav>
+</header>
+
+<div class="wrap">
+  <section class="hall-hero">
+    <div class="eyebrow">THE ARCHIVE OF CYBER TANG</div>
+    <h1>戏录<em>馆</em></h1>
+    <p>每一季恋综的戏与信，都收在这里。点开一卷，输入这一季的密码即可阅读。</p>
+  </section>
+  <section class="hall-links">
+    <a class="glass" href="../wall/lines.html"><i>♡</i><div><b>挂线墙</b><span>每一季的挂线与台词，可按角色搜索</span></div><em>→</em></a>
+    <a class="glass" href="../wall/pies.html"><i>饼</i><div><b>饼墙</b><span>规划、排期与招募，投喂猫粮帮想看的饼早日开席</span></div><em>→</em></a>
+  </section>
+  <section class="shelf" id="shelf"><div class="empty-hall glass">书架正在整理中……</div></section>
+</div>
+<footer class="foot">
+  <blockquote>愿长安的月光永远照耀您的归途</blockquote>
+  <cite>—— <span class="pawicon"></span> 图多盖洛</cite>
+  <small>CYBER TANG DYNASTY · ARCHIVE · <a href="upload.html" style="color:inherit">管理上传</a></small>
+</footer>
+
+<script>
+(function () {
+  var shelf = document.getElementById("shelf");
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  fetch("index.json?t=" + Date.now()).then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; }).then(function (list) {
+    if (!list.length) { shelf.innerHTML = '<div class="empty-hall glass">书架上还没有戏录，敬请期待。</div>'; return; }
+    list.sort(function (a, b) { return String(b.updated || "").localeCompare(String(a.updated || "")); });
+    shelf.innerHTML = list.map(function (t) {
+      return '<a class="tome glass" href="read.html?id=' + encodeURIComponent(t.id) + '"><span class="lock">🔒 需密码</span>' +
+        '<div class="kick">VOLUME</div><h2>' + esc(t.title) + "</h2>" + (t.scope ? '<div class="scope">' + esc(t.scope) + "</div>" : "") +
+        (t.note ? '<p class="note">' + esc(t.note) + "</p>" : "") +
+        '<div class="stats"><span><b>' + (t.days || 0) + "</b>天</span><span><b>" + (t.scenes || 0) + "</b>场戏</span>" +
+        (t.mail ? "<span><b>" + t.mail + "</b>封心动信</span>" : "") + (t.notes ? "<span><b>" + t.notes + "</b>张纸条</span>" : "") + (t.images ? "<span><b>" + t.images + "</b>张图</span>" : "") + "</div></a>";
+    }).join("");
+  });
+})();
+</script>
+</body>
+</html>

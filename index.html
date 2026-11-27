@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=7.13.12">
+<link rel="stylesheet" href="assets/site.css?v=7.13.16">
 </head>
 <body data-page="player" class="player">
 <div class="sky"></div>
@@ -27,7 +27,8 @@
     <b>图多盖洛</b>
     <small>TOODLES GALORE</small>
   </a>
-  <a class="entry" href="admin.html">指挥官后台 →</a>
+  <nav class="wall-tabs"><a href="wall/lines.html">挂线墙</a><a href="wall/pies.html">饼墙</a><a href="archive/">戏录馆</a></nav>
+  <a class="entry entry-2" href="admin.html">指挥官后台 →</a>
 </header>
 
 <div class="wrap">
@@ -43,6 +44,8 @@
       </div>
       <div class="search-meta" id="q-meta" aria-live="polite"></div>
       <div class="quick"><span>常用</span><button type="button" data-jump="心动信">💌 心动信</button><button type="button" data-jump="登入全息舱">🌌 约小群</button><button type="button" data-jump="时间线">🕰️ 时间线</button><button type="button" data-jump="芥子空间">🎒 背包</button><button type="button" data-jump="关系线">🧶 关系线</button><button type="button" data-jump="小纸条">📝 小纸条</button></div>
+      <a class="scroll-banner" href="archive/"><span class="sb-ic">卷</span><span class="sb-tx"><b>戏录馆</b><small>每一季的戏与信都收在这里，凭密码启封阅读</small></span><em>进入 →</em></a>
+      <div class="hub-links"><a href="wall/lines.html">♡ 挂线墙</a><a href="wall/pies.html">饼 饼墙</a></div>
     </div>
 
     <div class="pass-stage">
@@ -73,6 +76,9 @@
     <main id="chapters"></main>
   </div>
   <div class="gates">
+    <a class="gate" href="archive/"><i>卷</i><div><b>戏录馆</b><span>往期恋综的完整戏录、心动信与小纸条，凭密码阅读</span></div><em>→</em></a>
+    <a class="gate" href="wall/lines.html"><i>♡</i><div><b>挂线墙</b><span>心跳节律每一季的挂线与台词，可按角色搜索</span></div><em>→</em></a>
+    <a class="gate" href="wall/pies.html"><i>饼</i><div><b>饼墙</b><span>规划、排期与招募，投喂猫粮帮想看的饼早日开席</span></div><em>→</em></a>
     <a class="gate" href="admin.html"><i>令</i><div><b>指挥官后台</b><span>管理组专用：开局、占线、官约、表格导入等管理指令</span></div><em>→</em></a>
     <div class="gate soon"><i><span class="pawicon"></span></i><div><b>投喂图多盖洛</b><span>养猫小游戏正在筹备中，之后会在这里开放</span></div><em>敬请期待</em></div>
   </div>
@@ -86,7 +92,7 @@
 
 <button class="top" id="top" type="button" aria-label="回到顶部"><span class="pawicon"></span></button>
 <div class="toast" id="toast" role="status"></div>
-<script src="assets/data.js?v=7.13.12"></script>
-<script src="assets/app.js?v=7.13.12"></script>
+<script src="assets/data.js?v=7.13.15"></script>
+<script src="assets/app.js?v=7.13.15"></script>
 </body>
 </html>

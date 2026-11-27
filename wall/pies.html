@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>饼墙 | 心跳节律</title>
+<meta name="description" content="心跳节律的规划、排期与招募，投喂猫粮帮你想看的饼早日开席。">
+<meta name="theme-color" content="#050205">
+<link rel="icon" href="../assets/bow.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=7.13.16">
+<link rel="stylesheet" href="../archive/archive.css?v=13">
+<link rel="stylesheet" href="wall.css?v=7">
+</head>
+<body class="wall-page">
+<div class="sky"></div>
+<header class="bar">
+  <a class="brand" href="../"><img src="../assets/bow.png" alt=""><b>图多盖洛</b><small>TOODLES GALORE</small></a>
+  <nav class="wall-tabs"><a href="lines.html">挂线墙</a><a href="pies.html" aria-current="page">饼墙</a><a href="../archive/">戏录馆</a></nav>
+  <button type="button" class="entry admin-btn" id="adminBtn">管理登录</button>
+</header>
+
+<div class="wrap">
+  <section class="wall-hero">
+    <div class="eyebrow">HEARTBEAT · WHAT'S BAKING</div>
+    <h1>心跳节律<br><em>饼墙</em></h1>
+    <p>喵～这里是小白猫的烤饼台，实时更新 ing！看到想玩的饼，就往它面前的猫碗里丢一粒猫粮吧。碗里的猫粮越多，小白猫就越会蹲在管理组脚边喵喵催，让这个饼早点出炉喵！</p>
+    <div class="w-stats"><span><b id="st-total">–</b>个饼</span><span><b id="st-feed">–</b>粒猫粮</span><span><b id="st-done">–</b>季已完成</span></div>
+    <div class="w-tools"><button type="button" class="btn ghost adm-only" id="addPie">＋ 新增一个饼</button></div>
+  </section>
+
+  <section class="w-sec">
+    <header class="w-sec-head"><span class="ch-en">LIVE</span><h2>进度实况</h2></header>
+    <div class="live" id="live"><div class="w-empty glass">正在烤饼……</div></div>
+  </section>
+
+  <section class="w-sec">
+    <header class="w-sec-head"><span class="ch-en">FEED THE CAT</span><h2>饼库 · 投喂排行</h2><p>吃得最饱的饼排在最前面喵</p></header>
+    <div class="cats" id="cats"></div>
+    <div class="pie-grid" id="ideas"></div>
+  </section>
+
+  <section class="w-sec">
+    <header class="w-sec-head"><span class="ch-en">ALWAYS ON</span><h2>长期群</h2></header>
+    <div class="pie-grid" id="long"></div>
+  </section>
+
+  <section class="w-sec">
+    <details class="done-box glass">
+      <summary><span class="ch-en">ARCHIVED</span><b>已完成恋综</b><small><span id="doneN">–</span> 季</small></summary>
+      <div class="done-list" id="done"></div>
+    </details>
+  </section>
+</div>
+
+<button type="button" class="rtop" id="rtop" aria-label="回到顶部"><span class="pawicon"></span></button>
+<footer class="foot">
+  <blockquote>愿长安的月光永远照耀您的归途</blockquote>
+  <cite>—— <span class="pawicon"></span> 图多盖洛</cite>
+  <small>CYBER TANG DYNASTY · HEARTBEAT</small>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script src="common.js?v=2"></script>
+<script src="pies.js?v=6"></script>
+</body>
+</html>

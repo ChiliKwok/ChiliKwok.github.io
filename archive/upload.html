@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>收录戏录 | 戏录馆</title>
+<meta name="theme-color" content="#050205">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/bow.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=7.13.16">
+<link rel="stylesheet" href="archive.css?v=13">
+</head>
+<body>
+<div class="sky"></div>
+<header class="bar">
+  <a class="brand" href="../"><img src="../assets/bow.png" alt=""><b>图多盖洛</b><small>TOODLES GALORE</small></a>
+  <nav class="wall-tabs"><a href="../wall/lines.html">挂线墙</a><a href="../wall/pies.html">饼墙</a><a href="./">戏录馆</a></nav>
+</header>
+
+
+<div class="wrap up">
+  <section class="hall-hero">
+    <div class="eyebrow">ARCHIVE · 管理上传</div>
+    <h1>收录<em>戏录</em></h1>
+    <p>把骰子「导出戏录」生成的 Word 拖进来。排版、压缩图片、加密都在你的浏览器里完成，原文不会发到任何别的地方。</p>
+  </section>
+
+  <section class="up-card glass">
+    <h2><i>壹</i>GitHub 令牌</h2>
+    <p class="muted">用来把加密后的戏录直接提交到网站仓库。只需要设置一次；令牌只存在这台设备的浏览器里。没有令牌也可以用最下面的「下载存档包」。</p>
+    <label class="field"><span>令牌（以 github_pat_ 开头）</span><input id="tok" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…"></label>
+    <label class="check"><input type="checkbox" id="remember"> 在这台设备上记住令牌</label>
+    <details class="howto"><summary>怎么获取令牌？</summary>
+      <ol>
+        <li>登录 GitHub，打开 Settings → Developer settings → Personal access tokens → Fine-grained tokens，点 Generate new token。</li>
+        <li>Repository access 选 Only select repositories，只勾 ChiliKwok/ChiliKwok.github.io。</li>
+        <li>Permissions 里把 Contents 设为 Read and write，其余不用动。</li>
+        <li>生成后复制，粘贴到上面。令牌就像钥匙，不要发给别人。</li>
+      </ol>
+    </details>
+  </section>
+
+  <section class="up-card glass">
+    <h2><i>贰</i>选择戏录文件</h2>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept=".docx" hidden>
+      <span class="drop-ic"><span class="pawicon"></span></span>
+      <b>把 .docx 拖到这里，或点一下选择</b>
+      <small>骰子在管理群发「导出戏录 Dn-Dn」生成的文件</small>
+    </label>
+    <p class="muted" id="parse-msg"></p>
+  </section>
+
+  <section class="up-card glass" id="step2" hidden>
+    <h2><i>叁</i>核对与加密</h2>
+    <div class="summary" id="summary"></div>
+    <button class="btn ghost" type="button" id="show">预览排版效果</button>
+    <div class="grid2">
+      <label class="field"><span>标题</span><input id="title"></label>
+      <label class="field"><span>编号（网址里用，小写字母和数字）</span><input id="vid" spellcheck="false" placeholder="jiguang-2026"></label>
+    </div>
+    <label class="field"><span>简介（可不填，会显示在戏录馆书架上，不加密）</span><textarea id="note" placeholder="例如：雪原列车上的二十天"></textarea></label>
+    <div class="grid2">
+      <label class="field"><span>阅读密码</span><input id="pw1" type="password" autocomplete="new-password"></label>
+      <label class="field"><span>再输一次</span><input id="pw2" type="password" autocomplete="new-password"></label>
+    </div>
+    <p class="muted">密码请另外记好。网站上只存加密后的内容，忘了密码就无法打开；同一编号重新上传会覆盖旧版本。</p>
+    <div class="acts">
+      <button class="btn" type="button" id="push">加密并收录到网站</button>
+      <button class="btn ghost" type="button" id="zip">下载存档包</button>
+    </div>
+    <p class="err-msg" id="go-msg"></p>
+    <div class="progress" id="progress" hidden><div class="track"><div id="bar"></div></div><p id="log"></p><div id="done"></div></div>
+  </section>
+</div>
+
+<section class="preview-wrap" id="preview-wrap" hidden>
+  <div class="preview-bar"><span>预览 · 仅你可见，尚未加密</span><button class="btn ghost" type="button" id="hide">收起预览</button></div>
+  <div id="preview"></div>
+</section>
+
+<footer class="foot"><small>CYBER TANG DYNASTY · ARCHIVE</small></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="crypto.js?v=2"></script>
+<script src="render.js?v=10"></script>
+<script src="upload.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>挂线墙 | 心跳节律</title>
+<meta name="description" content="心跳节律每一季的挂线与台词。">
+<meta name="theme-color" content="#050205">
+<link rel="icon" href="../assets/bow.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=7.13.16">
+<link rel="stylesheet" href="../archive/archive.css?v=13">
+<link rel="stylesheet" href="wall.css?v=7">
+</head>
+<body class="wall-page">
+<div class="sky"></div>
+<header class="bar">
+  <a class="brand" href="../"><img src="../assets/bow.png" alt=""><b>图多盖洛</b><small>TOODLES GALORE</small></a>
+  <nav class="wall-tabs"><a href="lines.html" aria-current="page">挂线墙</a><a href="pies.html">饼墙</a><a href="../archive/">戏录馆</a></nav>
+  <button type="button" class="entry admin-btn" id="adminBtn">管理登录</button>
+</header>
+
+<div class="wrap">
+  <section class="wall-hero">
+    <div class="eyebrow">HEARTBEAT · THE WALL OF LINES</div>
+    <h1>心跳节律<br><em>挂线墙</em></h1>
+    <p>每一季恋综里，被说出口的、没说出口的心动，都挂在这里。</p>
+    <div class="w-stats"><span><b id="st-s">–</b>季</span><span><b id="st-l">–</b>条挂线</span><span><b id="st-n">–</b>位角色</span></div>
+    <div class="w-tools">
+      <div class="search"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="搜角色名或台词…" autocomplete="off" aria-label="搜索挂线"></div>
+      <button type="button" class="btn" id="rand">随机一条 ♡</button>
+      <button type="button" class="btn ghost adm-only" id="addSeason">＋ 新增一季</button>
+    </div>
+    <div class="search-meta" id="q-meta" aria-live="polite"></div>
+  </section>
+</div>
+<nav class="snav-wrap" id="snavWrap" aria-label="季度"><div class="snav nav-row" id="snav"></div></nav>
+<div class="wrap"><main id="seasons"><div class="w-empty glass">正在把挂线一条条挂上墙……</div></main></div>
+
+<button type="button" class="rtop" id="rtop" aria-label="回到顶部"><span class="pawicon"></span></button>
+<footer class="foot">
+  <blockquote>愿长安的月光永远照耀您的归途</blockquote>
+  <cite>—— <span class="pawicon"></span> 图多盖洛</cite>
+  <small>CYBER TANG DYNASTY · HEARTBEAT</small>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script src="common.js?v=2"></script>
+<script src="lines.js?v=1"></script>
+</body>
+</html>

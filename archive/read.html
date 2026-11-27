@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>戏录 | 图多盖洛</title>
+<meta name="theme-color" content="#050205">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/bow.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../assets/site.css?v=7.13.16">
+<link rel="stylesheet" href="archive.css?v=13">
+</head>
+<body>
+<div class="sky"></div>
+<header class="bar">
+  <a class="brand" href="../"><img src="../assets/bow.png" alt=""><b>图多盖洛</b><small>TOODLES GALORE</small></a>
+  <nav class="wall-tabs"><a href="../wall/lines.html">挂线墙</a><a href="../wall/pies.html">饼墙</a><a href="./">戏录馆</a></nav>
+</header>
+
+<section class="gatekeep" id="gate">
+  <div class="lockcard glass" id="card">
+    <div class="seal-ic">🔒</div>
+    <div class="kick">SEALED VOLUME</div>
+    <h1 id="t">戏录</h1>
+    <div class="scope" id="s"></div>
+    <form id="f" autocomplete="off">
+      <label class="field"><span>这一卷的密码</span><input id="pw" type="password" autocomplete="current-password" required></label>
+      <button class="btn" type="submit" id="go">启封阅读</button>
+      <div class="err" id="err" role="alert"></div>
+    </form>
+    <a class="back" href="./">← 回到戏录馆</a>
+  </div>
+</section>
+<div id="book" hidden></div>
+<footer class="foot">
+  <blockquote>愿长安的月光永远照耀您的归途</blockquote>
+  <cite>—— <span class="pawicon"></span> 图多盖洛</cite>
+  <small>CYBER TANG DYNASTY · ARCHIVE</small>
+</footer>
+
+<script src="crypto.js?v=2"></script>
+<script src="render.js?v=10"></script>
+<script>
+(function () {
+  var id = new URLSearchParams(location.search).get("id") || "";
+  var base = "data/" + encodeURIComponent(id) + "/";
+  var $ = function (x) { return document.getElementById(x); };
+  var meta = null, info = null;
+  if (!/^[a-z0-9-]+$/.test(id)) { $("t").textContent = "找不到这一卷"; $("f").hidden = true; return; }
+  fetch("index.json?t=" + Date.now()).then(function (r) { return r.json(); }).then(function (l) {
+    info = l.filter(function (x) { return x.id === id; })[0];
+    if (info) { $("t").textContent = info.title; $("s").textContent = info.scope || ""; document.title = info.title + " | 戏录馆"; }
+  }).catch(function () {});
+  var metaP = fetch(base + "meta.json?t=" + Date.now()).then(function (r) { if (!r.ok) throw 0; return r.json(); });
+  metaP.catch(function () { $("t").textContent = "找不到这一卷"; $("f").hidden = true; });
+
+  async function unlock(pw, silent) {
+    $("go").disabled = true; $("go").textContent = "启封中……"; $("err").textContent = "";
+    try {
+      meta = await metaP;
+      var key = await Vault.keyFromMeta(pw, meta);
+      var raw = await fetch(base + "book.bin?v=" + (meta.rev || 1)).then(function (r) { return r.arrayBuffer(); });
+      var book;
+      try { book = await Vault.openJSON(key, raw); } catch (e) { throw "pw"; }
+      try { sessionStorage.setItem("vol-" + id, pw); } catch (e) {}
+      var cache = {};
+      function loader(i) {
+        if (!cache[i]) cache[i] = fetch(base + "img/" + i + ".bin?v=" + (meta.rev || 1)).then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); })
+          .then(function (b) { return Vault.open(key, b); })
+          .then(function (bytes) { return URL.createObjectURL(new Blob([bytes], { type: (book.images[i] || {}).type || "image/webp" })); });
+        return cache[i];
+      }
+      $("gate").hidden = true; $("gate").style.display = "none"; $("book").hidden = false; window.scrollTo(0, 0);
+      Reader.render($("book"), book, loader, { kicker: "戏录 · " + (info && info.scope ? info.scope : "ARCHIVE") });
+      document.title = book.title + " | 戏录馆";
+      if (location.hash) { var el = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (el) el.scrollIntoView(); }
+    } catch (e) {
+      $("go").disabled = false; $("go").textContent = "启封阅读";
+      if (silent) return;
+      $("err").textContent = e === "pw" ? "密码不对，小白猫没能拆开封印。" : "读取失败，请稍后再试。";
+      $("card").classList.remove("shake"); void $("card").offsetWidth; $("card").classList.add("shake");
+    }
+  }
+  $("f").addEventListener("submit", function (e) { e.preventDefault(); unlock($("pw").value); });
+  var saved = null; try { saved = sessionStorage.getItem("vol-" + id); } catch (e) {}
+  if (saved) unlock(saved, true);
+})();
+</script>
+</body>
+</html>
