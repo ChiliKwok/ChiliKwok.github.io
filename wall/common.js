@@ -33,6 +33,7 @@
             return '<option value="' + esc(o[0]) + '"' + (o[0] === v ? " selected" : "") + ">" + esc(o[1]) + "</option>"; }).join("") + "</select>";
           else if (f.type === "file") inp = '<input type="file" name="' + f.k + '" accept="image/*">';
           else inp = '<input name="' + f.k + '" value="' + esc(v) + '" placeholder="' + esc(f.placeholder || "") + '"' + (f.type === "password" ? ' type="password"' : f.type === "email" ? ' type="email" autocomplete="username"' : f.type === "date" ? ' type="date"' : "") + ">";
+          if (f.type === "date") inp = '<div class="date-row">' + inp + '<button type="button" class="date-clear" data-clear="' + f.k + '">清空</button></div>';
           return '<label class="field"><span>' + esc(f.label) + "</span>" + inp + (f.hint ? '<small class="hint">' + esc(f.hint) + "</small>" : "") + "</label>";
         }).join("") + '</div><footer>' + (opts.danger ? '<button type="button" class="btn ghost w-danger">' + esc(opts.danger) + "</button>" : "") +
         '<span class="sp"></span><button type="button" class="btn ghost w-cancel">取消</button><button type="submit" class="btn">' + esc(opts.ok || "保存") + "</button></footer></form>";
@@ -42,8 +43,20 @@
       setTimeout(function () { var first = f.querySelector("input,textarea,select"); if (first) first.focus(); }, 30);
       function close(val) { wrap.remove(); document.body.classList.remove("w-lock"); resolve(val); }
       wrap.querySelector(".w-x").onclick = function () { close(null); };
-      wrap.querySelector(".w-cancel").onclick = function () { close(null); };
-      wrap.addEventListener("click", function (e) { if (e.target === wrap) close(null); });
+      wrap.querySelector(".w-cancel").onclick = function () { if (!dirty || confirm("还没保存，确定关闭吗？")) close(null); };
+      // 只有在窗口外按下并松开才算「点外面关闭」，并且改过内容要先确认，避免日期弹层等误触把窗口关掉
+      var downOut = false, dirty = false;
+      f.addEventListener("input", function () { dirty = true; });
+      f.addEventListener("change", function () { dirty = true; });
+      wrap.addEventListener("mousedown", function (e) { downOut = e.target === wrap; });
+      wrap.addEventListener("click", function (e) {
+        if (e.target !== wrap || !downOut) return;
+        if (dirty && !confirm("还没保存，确定关闭吗？")) return;
+        close(null);
+      });
+      wrap.querySelectorAll("[data-clear]").forEach(function (b) {
+        b.addEventListener("click", function (e) { e.preventDefault(); f.elements[b.dataset.clear].value = ""; });
+      });
       var d = wrap.querySelector(".w-danger");
       if (d) d.onclick = function () { close({ __danger: true }); };
       f.addEventListener("submit", function (e) {

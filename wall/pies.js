@@ -239,6 +239,7 @@
     clearTimeout(t); t = setTimeout(load, 300);
   }).subscribe();
 
+  window.PieWall = { pies: function () { return pies; }, reload: load };
   window.addEventListener("scroll", function () { $("#rtop").classList.toggle("show", window.pageYOffset > 900); }, { passive: true });
   $("#rtop").addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
   load();

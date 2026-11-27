@@ -38,8 +38,29 @@
         '<div class="line-grid">' + (ls.length ? ls.map(cardHTML).join("") : '<p class="w-none">这一季还没有挂线。</p>') + "</div></section>";
     }).join("");
     applySearch();
+    masonry(true);
     window.scrollTo(0, keep);
   }
+
+  /* 瀑布流：卡片按顺序放进当前最矮的一列 */
+  function colsFor(w) { return w >= 960 ? 3 : w >= 640 ? 2 : 1; }
+  function masonry(force) {
+    main.querySelectorAll(".line-grid").forEach(function (g) {
+      var cards = Array.prototype.slice.call(g.querySelectorAll(".line-card:not(.off)"));
+      var hidden = Array.prototype.slice.call(g.querySelectorAll(".line-card.off"));
+      var n = colsFor(g.clientWidth || main.clientWidth);
+      if (!force && g.dataset.n === String(n)) return;
+      if (!cards.length && !hidden.length) return;
+      var cols = [];
+      for (var i = 0; i < n; i++) { var c = document.createElement("div"); c.className = "m-col"; cols.push(c); }
+      g.innerHTML = ""; cols.forEach(function (c) { g.appendChild(c); });
+      g.style.setProperty("--n", n);
+      cards.forEach(function (card) { cols.reduce(function (a, b) { return b.offsetHeight < a.offsetHeight ? b : a; }).appendChild(card); });
+      hidden.forEach(function (card) { cols[0].appendChild(card); });
+      g.dataset.n = n;
+    });
+  }
+  var rz; window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(function () { masonry(true); }, 150); });
 
   /* 搜索 */
   function applySearch() {
@@ -55,7 +76,7 @@
     nav.querySelectorAll("a").forEach(function (a) { var s = document.getElementById(a.dataset.t); a.classList.toggle("off", !!s && s.classList.contains("off")); });
     $("#q-meta").textContent = q ? (hits ? "找到 " + hits + " 条挂线" : "没有找到，换个名字试试") : "";
   }
-  $("#q").addEventListener("input", function () { q = this.value.trim().toLowerCase(); applySearch(); });
+  $("#q").addEventListener("input", function () { q = this.value.trim().toLowerCase(); applySearch(); masonry(true); });
 
   /* 随机一条 */
   $("#rand").addEventListener("click", function () {
