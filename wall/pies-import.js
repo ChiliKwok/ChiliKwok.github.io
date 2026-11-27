@@ -50,7 +50,29 @@
     return out;
   }
 
+  /* ---------- 档期 → 开始 / 结束日期 ----------
+     认得「12.1-12.6」「12.1~6」「12月1日-12月6日」「2026.12.1-12.6」，可带（含D0）等备注。
+     年份：已完成的取今天或之前的那一年；其余取今天之后最近的那一年。 */
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function todayStr() { return new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10); }
+  function datesOf(text, status) {
+    var m = String(text || "").match(/(?:(\d{4})[.\/年-])?(\d{1,2})[.\/月-](\d{1,2})日?\s*[-~～—–至到]+\s*(?:(\d{1,2})[.\/月])?(\d{1,2})日?/);
+    if (!m) return null;
+    var t = todayStr(), y = m[1] ? +m[1] : +t.slice(0, 4);
+    var sm = +m[2], sd = +m[3], em = m[4] ? +m[4] : sm, ed = +m[5];
+    if (sm < 1 || sm > 12 || em < 1 || em > 12 || sd > 31 || ed > 31) return null;
+    var start = y + "-" + pad(sm) + "-" + pad(sd);
+    if (!m[1]) {
+      if (status === "done" && start > t) { y--; }
+      else if (status !== "done" && Date.parse(start) < Date.parse(t) - 60 * 864e5) { y++; }
+      start = y + "-" + pad(sm) + "-" + pad(sd);
+    }
+    var ey = em < sm ? y + 1 : y;
+    return { start: start, end: ey + "-" + pad(em) + "-" + pad(ed) };
+  }
+
   /* ---------- 界面 ---------- */
+  function hasDates() { var ps = window.PieWall ? window.PieWall.pies() : []; return ps.length > 0 && "start_date" in ps[0]; }
   function norm(t) { return String(t).replace(/^心跳节律/, "").replace(/^S[P]?\d+[：:\s]*/i, "").replace(/\s+/g, ""); }
   function open() {
     var wrap = document.createElement("div");
@@ -81,6 +103,8 @@
           '<div class="imp-title"><b>《' + esc(it.title) + '》</b>' + (dup ? '<span class="imp-dup">已存在，默认不导入</span>' : "") + "</div>" +
           '<div class="imp-meta"><select data-k="status">' + Object.keys(STATUS).map(function (k) { return '<option value="' + k + '"' + (k === it.status ? " selected" : "") + ">" + STATUS[k] + "</option>"; }).join("") + "</select>" +
           '<input data-k="category" value="' + esc(it.category) + '" placeholder="题材分类">' + (it.schedule ? "<span>档期 " + esc(it.schedule) + "</span>" : "") + "</div>" +
+          (hasDates() ? '<div class="imp-meta imp-dates"><span>开始</span><input type="date" data-k="start_date" value="' + (it.start_date || "") + '"><span>结束</span><input type="date" data-k="end_date" value="' + (it.end_date || "") + '">' +
+            (it.start_date ? "<em>已从档期识别</em>" : "") + "</div>" : "") +
           (it.quote ? '<div class="imp-q">' + esc(it.quote).replace(/\n/g, "<br>") + "</div>" : "") +
           (it.tags.length ? '<div class="tags">' + it.tags.map(function (t) { return "<span>#" + esc(t) + "</span>"; }).join("") + "</div>" : "") +
           (it.intro ? '<div class="imp-i">' + esc(it.intro).replace(/\n/g, "<br>") + "</div>" : "") + "</div></div>";
@@ -93,6 +117,10 @@
     }
     wrap.querySelector("#impRead").onclick = function () {
       items = parse(wrap.querySelector("#impText").value, { status: wrap.querySelector("#impStatus").value, category: wrap.querySelector("#impCat").value.trim() });
+      items.forEach(function (it) {
+        var d = datesOf(it.schedule, it.status);
+        if (d) { it.start_date = d.start; it.end_date = d.end; if (it.status === "idea") it.status = "scheduled"; }
+      });
       preview();
     };
     wrap.querySelector("#impPrev").addEventListener("change", function (e) {
@@ -105,7 +133,9 @@
       var pick = items.filter(function (x) { return x.on; });
       var max = (window.PieWall ? window.PieWall.pies() : []).reduce(function (m, p) { return Math.max(m, p.sort); }, 0);
       var rows = pick.map(function (it, k) {
-        return { title: it.title, status: it.status, category: it.category, quote: it.quote, intro: it.intro, tags: it.tags, schedule: it.schedule, sort: max + k + 1 };
+        var row = { title: it.title, status: it.status, category: it.category, quote: it.quote, intro: it.intro, tags: it.tags, schedule: it.schedule, sort: max + k + 1 };
+        if (hasDates()) { row.start_date = it.start_date || null; row.end_date = it.end_date || null; }
+        return row;
       });
       this.disabled = true; wrap.querySelector("#impMsg").textContent = "导入中……";
       var r = await sb.from("pies").insert(rows);
@@ -118,5 +148,5 @@
   document.addEventListener("DOMContentLoaded", function () {
     var b = $("#importPie"); if (b) b.addEventListener("click", open);
   });
-  window.PieImport = { parse: parse };
+  window.PieImport = { parse: parse, datesOf: datesOf };
 })();

@@ -171,6 +171,7 @@
     run(sb.from("seasons").insert(row), "新的一季已开张");
   });
 
+  window.LineWall = { seasons: function () { return seasons; }, lines: function () { return lines; }, reload: load };
   W.live(["seasons", "lines"], load);
   load();
 })();

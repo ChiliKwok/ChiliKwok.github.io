@@ -10,7 +10,8 @@
   function today() { return new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10); }
   function days(a, b) { return Math.round((Date.parse(b) - Date.parse(a)) / 864e5); }
   function stateOf(p) {
-    if (p.start_date && p.end_date) {
+    // 只有「定档预热」的饼才按日期自动流转；改成画饼中、长期群等就不再看日期
+    if (p.start_date && p.end_date && (p.status === "scheduled" || p.status === "running" || p.status === "recruiting")) {
       var t = today();
       if (t < p.start_date) return "scheduled";
       if (t <= p.end_date) return "running";
@@ -173,7 +174,7 @@
     p = p || {};
     return [
       { k: "title", label: "名字（不用加书名号）", value: p.title },
-      { k: "status", label: "状态（填了下面的开始、结束日期，会按北京时间自动变成 定档预热 → 正在进行 → 已完成）", type: "select",
+      { k: "status", label: "状态（选「定档预热」并填日期，会按北京时间自动变成 正在进行 → 已完成；改回画饼中即取消定档）", type: "select",
         value: p.status === "recruiting" || p.status === "running" ? "scheduled" : (p.status || "idea"), options: PICK.map(function (k) { return [k, STATUS[k]]; }) },
     ].concat(hasDates() ? [
       { k: "start_date", label: "开始日期（含 D0，可空）", type: "date", value: p.start_date || "" },
@@ -189,7 +190,9 @@
   }
   function toRow(r) {
     return { title: r.title.replace(/^《|》$/g, ""), status: r.status, category: r.category, quote: r.quote, intro: r.intro, schedule: r.schedule, link: r.link || null,
-      ...(hasDates() ? { start_date: r.start_date || null, end_date: r.end_date || null } : {}),
+      ...(hasDates() ? (r.status === "scheduled" || r.status === "done"
+        ? { start_date: r.start_date || null, end_date: r.end_date || null }
+        : { start_date: null, end_date: null }) : {}),
       tags: r.tags.split(/[#＃\s]+/).map(function (x) { return x.trim(); }).filter(Boolean) };
   }
   async function run(p, msg) {

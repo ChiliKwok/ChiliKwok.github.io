@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap">
 <link rel="stylesheet" href="../assets/site.css?v=7.13.16">
 <link rel="stylesheet" href="../archive/archive.css?v=13">
-<link rel="stylesheet" href="wall.css?v=12">
+<link rel="stylesheet" href="wall.css?v=14">
 </head>
 <body class="wall-page">
 <div class="sky"></div>
@@ -33,6 +33,7 @@
         <input id="q" type="search" placeholder="搜角色名或台词…" autocomplete="off" aria-label="搜索挂线"></div>
       <button type="button" class="btn" id="rand">随机一条 ♡</button>
       <button type="button" class="btn ghost adm-only" id="addSeason">＋ 新增一季</button>
+      <button type="button" class="btn ghost adm-only" id="importLines">⎘ 批量粘贴识别</button>
     </div>
     <div class="search-meta" id="q-meta" aria-live="polite"></div>
   </section>
@@ -48,6 +49,7 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
 <script src="common.js?v=4"></script>
-<script src="lines.js?v=2"></script>
+<script src="lines.js?v=3"></script>
+<script src="lines-import.js?v=2"></script>
 </body>
 </html>
